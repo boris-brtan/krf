@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import clsx from 'clsx'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import {
@@ -7,7 +7,13 @@ import {
 } from '@material-ui/core'
 import MenuIcon from '@material-ui/icons/Menu'
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
+import DarkThemeIcon from '@material-ui/icons/Brightness4'
+import LightThemeIcon from '@material-ui/icons/Brightness7'
 import PropTypes from 'prop-types'
+import { useDispatch } from 'react-redux'
+import { push } from 'react-router-redux'
+import { useTheme } from '@material-ui/styles'
+import { auth_clear } from './actions'
 
 const drawerWidth = 240
 const useStyles = makeStyles((theme) =>
@@ -61,60 +67,61 @@ const useStyles = makeStyles((theme) =>
             }),
             marginLeft: drawerWidth,
         },
+        paletteMode: {
+            position: 'absolute',
+            left: 0,
+        }
     }),
 )
 
 export default function Menu(props) {
     const classes = useStyles()
-    const [open, setOpen] = React.useState(false)
+    const dispatch = useDispatch()
+    const theme = useTheme()
 
-    const handleDrawerOpen = () => {
-        setOpen(true)
-    }
+    const [open, setOpen] = useState(false)
 
-    const handleDrawerClose = () => {
-        setOpen(false)
+    const { togglePalleteMode } = props
+    const toggleDrawer = () => {
+        setOpen(!open)
     }
+    const handleMenuItem = (idx) => dispatch(push(['/user', '/'][idx]))
+    const handleDrawerTransition = () => {
+        window.dispatchEvent(new Event('resize'))
+    }
+    const handleAuthClear = () => dispatch(auth_clear())
 
     return (<>
-        <AppBar
-            position="fixed"
+        <AppBar position="fixed"
             className={clsx(classes.appBar, {
                 [classes.appBarShift]: open,
             })}
         >
             <Toolbar>
-                <IconButton
-                    color="inherit"
-                    aria-label="open drawer"
-                    onClick={handleDrawerOpen}
-                    edge="start"
-                    className={clsx(classes.menuButton, open && classes.hide)}
-                >
-                    <MenuIcon />
-                </IconButton>
-                <Typography variant="h6" noWrap>
-                    Persistent drawer
-            </Typography>
+                <IconButton color="inherit" aria-label="open drawer" edge="start"
+                    onClick={toggleDrawer} className={clsx(classes.menuButton, open && classes.hide)}
+                ><MenuIcon /></IconButton>
+                <Typography variant="h6" noWrap>Slovenské darovanie krvi</Typography>
             </Toolbar>
         </AppBar>
-        <Drawer
-            variant="persistent"
-            anchor="left"
-            open={open}
+        <Drawer variant="persistent" anchor="left" open={open}
             classes={{
                 paper: classes.drawerPaper,
             }}
+            onTransitionEnd={handleDrawerTransition}
         >
             <div className={classes.drawerHeader}>
-                <IconButton onClick={handleDrawerClose}>
+                <IconButton onClick={togglePalleteMode} className={classes.paletteMode}>
+                    {theme.palette.type === 'dark' ? <LightThemeIcon /> : <DarkThemeIcon />}
+                </IconButton>
+                <IconButton onClick={toggleDrawer}>
                     <ChevronLeftIcon />
                 </IconButton>
             </div>
             <Divider />
             <List>
-                {['Počet odberov', 'Výsledky'].map((text) => (
-                    <ListItem button key={text}>
+                {['Darca', 'Výsledky'].map((text, idx) => (
+                    <ListItem button key={text} onClick={() => handleMenuItem(idx)}>
                         <ListItemIcon><MenuIcon /></ListItemIcon>
                         <ListItemText primary={text} />
                     </ListItem>
@@ -122,8 +129,8 @@ export default function Menu(props) {
             </List>
             <Divider />
             <List>
-                {['Odhlásiť sa'].map((text) => (
-                    <ListItem button key={text}>
+                {[{ text: 'Odhlásiť sa', handler: handleAuthClear }].map(({ text, handler }) => (
+                    <ListItem button key={text} onClick={handler}>
                         <ListItemIcon><MenuIcon /></ListItemIcon>
                         <ListItemText primary={text} />
                     </ListItem>
@@ -142,5 +149,6 @@ export default function Menu(props) {
 }
 
 Menu.propTypes = {
-    children: PropTypes.array,
+    children: PropTypes.any,
+    togglePalleteMode: PropTypes.func,
 }

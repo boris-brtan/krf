@@ -14,17 +14,6 @@ import createSagaMiddleware from 'redux-saga'
 import rootSaga from './sagas'
 import rootReducer from './reducers'
 
-import { createMuiTheme, ThemeProvider, responsiveFontSizes } from '@material-ui/core/styles'
-import CssBaseline from '@material-ui/core/CssBaseline'
-
-const theme = responsiveFontSizes(
-    createMuiTheme({
-        palette: {
-            type: 'dark',
-        },
-    })
-)
-
 const history = createBrowserHistory()
 const sagaMiddleware = createSagaMiddleware()
 
@@ -41,17 +30,14 @@ sagaMiddleware.run(rootSaga)
 ReactDOM.render(
     <Provider store={store}>
         <Router history={history}>
-            <ThemeProvider theme={theme}>
-                <CssBaseline />
-                <App />
-            </ThemeProvider>
+            <App />
         </Router>
     </Provider>,
     document.getElementById('root')
 )
 
 window.onbeforeunload = () => {
-    localStorage.state=JSON.stringify(store.getState())
+    localStorage.state = JSON.stringify(store.getState())
 }
 
 // If you want your app to work offline and load faster, you can change

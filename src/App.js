@@ -1,31 +1,68 @@
-import React from 'react'
-
-import { Typography } from '@material-ui/core'
-import { useTheme } from '@material-ui/core/styles'
+import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Route } from 'react-router-dom'
+import { user_card, user_home, settings_params } from './actions'
+import Activate from './components/Activate'
+import Donation from './components/Donation'
+import Donations from './components/Donations'
+import Login from './components/Login'
+import User from './components/User'
 import Menu from './Menu'
+import CssBaseline from '@material-ui/core/CssBaseline'
+import { createMuiTheme, ThemeProvider, responsiveFontSizes } from '@material-ui/core/styles'
 
-function App() {
-    const theme = useTheme()
+export default function App() {
+    const dispatch = useDispatch()
+    const [paletteMode, setPaletteMode] = useState(0)
 
-    const styles = {
-        primaryText: {
-            backgroundColor: theme.palette.background.default,
-            padding: theme.spacing(1, 2),
-            color: theme.palette.text.primary,
-        },
-        primaryColor: {
-            backgroundColor: theme.palette.primary.main,
-            padding: theme.spacing(1, 2),
-            color: theme.palette.common.white,
-        },
+    const theme = responsiveFontSizes(
+        createMuiTheme({
+            palette: {
+                type: ['dark', 'light'][paletteMode],
+                primary: {
+                    main: '#c62828',
+                },
+                secondary: {
+                    main: '#1976d2',
+                },
+            },
+        })
+    )
+
+    const togglePalleteMode = () => {
+        setPaletteMode((paletteMode + 1) % 2)
+    }
+
+    const openAuthActivate = useSelector((state) => state.authReducer.user === null || !state.authReducer.activated)
+    const openAuthLogin = useSelector((state) => state.authReducer.token === null)
+
+    const user = useSelector((state) => state.userReducer)
+    const settingsParams = useSelector((state) => state.settingsReducer.params)
+    const token = useSelector((state) => state.authReducer.token)
+
+    if (openAuthActivate) {
+        return <Activate />
+    } else if (openAuthLogin) {
+        return <Login />
+    }
+
+    if (user.Meno === null) {
+        dispatch(user_home(token))
+        dispatch(user_card(token))
+    }
+
+    if (settingsParams.length === 0) {
+        dispatch(settings_params(token))
     }
 
     return (
-        <Menu>
-            <Typography style={styles.primaryColor}>{`Primary color ${styles.primaryColor.backgroundColor}`}</Typography>
-            <Typography style={styles.primaryText}>{`Primary text ${styles.primaryText.color}`}</Typography>
-        </Menu>
+        <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <Menu togglePalleteMode={togglePalleteMode}>
+                <Route exact path={process.env.PUBLIC_URL + '/'} component={Donations} />
+                <Route exact path={process.env.PUBLIC_URL + '/user'} component={User} />
+                <Route path={process.env.PUBLIC_URL + '/donation/:id'} component={Donation} />
+            </Menu>
+        </ThemeProvider>
     )
 }
-
-export default App
