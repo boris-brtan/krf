@@ -77,7 +77,7 @@ function* userDonation(action) {
 
         yield put({ type: USER_DONATION_SUCCEEDED, payload })
         yield put({ type: USER_DONATION_RESULT_REQUESTED, payload: action.payload })
-        yield put(push('/donation/' + id))
+        yield put(push(process.env.PUBLIC_URL + '/donation/' + id))
     } catch ({ message }) {
         yield put({ type: USER_DONATION_FAILED, message })
         yield put({ type: AUTH_TOKEN_EXPIRED })

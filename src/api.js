@@ -38,7 +38,7 @@ const API = {
                     'X-EKDToken': token,
                 },
             })
-            const userInfo = response.json()
+            const userInfo = await response.json()
 
             // {
             //     "TerminNasledOdberu":Datetime("YYYY-MM-DDThh:mm:ss"),
@@ -55,7 +55,7 @@ const API = {
                     'X-EKDToken': token,
                 },
             })
-            const userInfo = response.json()
+            const userInfo = await response.json()
 
             //    {
             //     "Meno": String,
@@ -153,7 +153,7 @@ const API = {
                 },
             })
 
-            const bloodSettings = response.json()
+            const bloodSettings = await response.json()
 
             // [{
             //     "Id": Number,

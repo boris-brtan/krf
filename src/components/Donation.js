@@ -136,8 +136,7 @@ export default function Donation(props) {
             <div className={classes.grid}>
                 <Paper className={classes.paper}>
                     <Typography variant="h6">
-                        {new Date(donation.Zaciatok).toLocaleDateString() + ' ' +
-                            new Date(donation.Zaciatok).toLocaleTimeString() + ' - ' +
+                        {new Date(donation.Zaciatok).toLocaleString().replace(',', '') + ' - ' +
                             new Date(donation.Koniec).toLocaleTimeString()}
                     </Typography>
                 </Paper>

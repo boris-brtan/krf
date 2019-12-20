@@ -85,7 +85,10 @@ export default function Menu(props) {
     const toggleDrawer = () => {
         setOpen(!open)
     }
-    const handleMenuItem = (idx) => dispatch(push(['/user', '/'][idx]))
+    const handleMenuItem = (idx) => dispatch(push([
+        process.env.PUBLIC_URL + '/user', 
+        process.env.PUBLIC_URL + '/'
+    ][idx]))
     const handleDrawerTransition = () => {
         window.dispatchEvent(new Event('resize'))
     }
