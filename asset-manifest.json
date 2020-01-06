@@ -1,21 +1,21 @@
 {
   "files": {
     "main.css": "/krf/static/css/main.b1707c8f.chunk.css",
-    "main.js": "/krf/static/js/main.ec48a352.chunk.js",
-    "main.js.map": "/krf/static/js/main.ec48a352.chunk.js.map",
+    "main.js": "/krf/static/js/main.cd059ddb.chunk.js",
+    "main.js.map": "/krf/static/js/main.cd059ddb.chunk.js.map",
     "runtime-main.js": "/krf/static/js/runtime-main.7c35aa72.js",
     "runtime-main.js.map": "/krf/static/js/runtime-main.7c35aa72.js.map",
-    "static/js/2.e522f97b.chunk.js": "/krf/static/js/2.e522f97b.chunk.js",
-    "static/js/2.e522f97b.chunk.js.map": "/krf/static/js/2.e522f97b.chunk.js.map",
+    "static/js/2.1179f554.chunk.js": "/krf/static/js/2.1179f554.chunk.js",
+    "static/js/2.1179f554.chunk.js.map": "/krf/static/js/2.1179f554.chunk.js.map",
     "index.html": "/krf/index.html",
-    "precache-manifest.8ae59d54c045644dee76db9665a831e6.js": "/krf/precache-manifest.8ae59d54c045644dee76db9665a831e6.js",
+    "precache-manifest.0ccbdbaaf9ac846e8f8594f64f57f54c.js": "/krf/precache-manifest.0ccbdbaaf9ac846e8f8594f64f57f54c.js",
     "service-worker.js": "/krf/service-worker.js",
     "static/css/main.b1707c8f.chunk.css.map": "/krf/static/css/main.b1707c8f.chunk.css.map"
   },
   "entrypoints": [
     "static/js/runtime-main.7c35aa72.js",
-    "static/js/2.e522f97b.chunk.js",
+    "static/js/2.1179f554.chunk.js",
     "static/css/main.b1707c8f.chunk.css",
-    "static/js/main.ec48a352.chunk.js"
+    "static/js/main.cd059ddb.chunk.js"
   ]
 }
