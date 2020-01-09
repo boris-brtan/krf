@@ -74,10 +74,10 @@ function* userDonation(action) {
     try {
         const { token, id } = action.payload
         const payload = yield call(api.user.donation, token, id)
-
+        
         yield put({ type: USER_DONATION_SUCCEEDED, payload })
         yield put({ type: USER_DONATION_RESULT_REQUESTED, payload: action.payload })
-        yield put(push(process.env.PUBLIC_URL + '/donation/' + id))
+        yield put(push( '/donation/' + id))
     } catch ({ message }) {
         yield put({ type: USER_DONATION_FAILED, message })
         yield put({ type: AUTH_TOKEN_EXPIRED })

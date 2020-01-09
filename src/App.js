@@ -59,9 +59,9 @@ export default function App() {
         <ThemeProvider theme={theme}>
             <CssBaseline />
             <Menu togglePalleteMode={togglePalleteMode}>
-                <Route exact path={process.env.PUBLIC_URL + '/'} component={Donations} />
-                <Route exact path={process.env.PUBLIC_URL + '/user'} component={User} />
-                <Route path={process.env.PUBLIC_URL + '/donation/:id'} component={Donation} />
+                <Route exact path={'/'} component={Donations} />
+                <Route exact path={'/user'} component={User} />
+                <Route path={ '/donation/:id'} component={Donation} />
             </Menu>
         </ThemeProvider>
     )

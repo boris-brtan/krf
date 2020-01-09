@@ -1,12 +1,14 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { makeStyles, createStyles } from '@material-ui/styles'
-import { CardHeader, Avatar, Card, CardContent, Typography, List, ListItem, ListItemText, Divider } from '@material-ui/core'
+import { CardHeader, Avatar, Card, CardContent, Typography, List, ListItem, ListItemText, Divider, IconButton, Dialog } from '@material-ui/core'
+import CreditCard from '@material-ui/icons/CreditCard'
+import jsbarcode from 'jsbarcode'
 
 const useStyles = makeStyles((theme) =>
     createStyles({
         root: {
-            padding: theme.spacing(2)
+            padding: theme.spacing(2),
         },
         card: {
             margin: 'auto',
@@ -19,15 +21,36 @@ const useStyles = makeStyles((theme) =>
             backgroundColor: theme.palette.secondary.main,
             color: theme.palette.secondary.contrastText,
         },
+        barcode: {
+            marginTop: theme.spacing(2),
+            marginRight: theme.spacing(2),
+        },
     })
 )
 
 export default function User() {
     const classes = useStyles()
     const user = useSelector((state) => state.userReducer)
-    console.log(user)
+    const userID = useSelector((state) => state.authReducer.user)
+
+    const [barcodeOpen, setBarcodeOpen] = useState(false)
+
+    useEffect(() => {
+        setTimeout(() => {
+
+        }, 1000)
+    }, [userID])
+
+    const handleToggleBarcode = () => {
+        setBarcodeOpen(!barcodeOpen)
+        if (!barcodeOpen) setTimeout(() => jsbarcode('.barcode', userID, { width: 3, format: 'code128' }), 200) //TODO: find better implementation https://lindell.me/JsBarcode/
+    }
+
     return (
         <div className={classes.root}>
+            <Dialog open={barcodeOpen} onClose={handleToggleBarcode}>
+                <svg className="barcode" />
+            </Dialog>
             <Card className={classes.card}>
                 <CardHeader
                     className={classes.cardHeader}
@@ -37,6 +60,11 @@ export default function User() {
                         <Avatar aria-label="Recipe" className={classes.avatar}>
                             {user.Meno[0]}
                         </Avatar>
+                    }
+                    action={
+                        <IconButton aria-label="barcode" className={classes.barcode} onClick={handleToggleBarcode}>
+                            <CreditCard fontSize="large" />
+                        </IconButton>
                     }>
                 </CardHeader>
                 <CardContent>

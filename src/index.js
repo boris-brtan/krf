@@ -4,7 +4,7 @@ import './index.css'
 import App from './App'
 import * as serviceWorker from './serviceWorker'
 
-import { createBrowserHistory } from 'history'
+import { createBrowserHistory, createHashHistory } from 'history'
 import { Router } from 'react-router-dom'
 import { createStore, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
@@ -14,7 +14,7 @@ import createSagaMiddleware from 'redux-saga'
 import rootSaga from './sagas'
 import rootReducer from './reducers'
 
-const history = createBrowserHistory()
+const history = process.env.PUBLIC_URL.search(/krf/) === -1 ? createBrowserHistory() : createHashHistory()
 const sagaMiddleware = createSagaMiddleware()
 
 const store = createStore(

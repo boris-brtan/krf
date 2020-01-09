@@ -86,15 +86,33 @@ export default function Menu(props) {
         setOpen(!open)
     }
     const handleMenuItem = (idx) => dispatch(push([
-        process.env.PUBLIC_URL + '/user', 
-        process.env.PUBLIC_URL + '/'
+        '/user',
+        '/'
     ][idx]))
     const handleDrawerTransition = () => {
         window.dispatchEvent(new Event('resize'))
     }
     const handleAuthClear = () => dispatch(auth_clear())
 
-    return (<>
+
+    const handleTouchStart = ({ nativeEvent: e }) => {
+        const startX = e.touches[0].clientX
+
+        const handleSwipe = (evt) => {
+            const swipeLength = evt.changedTouches[0].clientX - startX
+            if (!open && swipeLength > 150) {
+                setOpen(true)
+            } else if (open && swipeLength < -150) {
+                setOpen(false)
+            }
+            e.target.removeEventListener('touchend', handleSwipe)
+        }
+        if ((!open && startX < 50) || (open && startX < 300)) {
+            e.target.addEventListener('touchend', handleSwipe)
+        }
+    }
+
+    return (<div onTouchStart={handleTouchStart}>
         <AppBar position="fixed"
             className={clsx(classes.appBar, {
                 [classes.appBarShift]: open,
@@ -148,7 +166,7 @@ export default function Menu(props) {
             <div className={classes.drawerHeader} />
             {props.children}
         </main>
-    </>)
+    </div>)
 }
 
 Menu.propTypes = {
